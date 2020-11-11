@@ -1,0 +1,19 @@
+language: python
+
+cache:
+  directories:
+    - "$HOME/.m2"
+
+services:
+  - docker
+
+install: skip
+
+script:
+  #Build Docker Image
+  - docker build -t akshaysachdeva1234/python-docker-hello .
+  #Push Image to Docker Hub
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
+    docker push akshaysachdeva1234/python-docker-hello;
+    fi
